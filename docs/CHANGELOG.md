@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- [修复] 每日 Actions 未设置实时行情顺序时保留空值，使仅配置 TickPlus Key 的任务正确启用自动首选及批量实时预取；保留显式顺序和无 Key 免费源回退。
+
+- [修复] TickPlus 正确区分裸 000001 等股票与显式同码指数；补齐行情指标、按接口冷却与分组批量缓存，ETF 轮动使用独立前复权实例，并统一首选推荐入口。
+- [新功能] 新增可选 TickPlus A 股 / ETF 日 K、实时行情与名称查询，支持配置管理、Actions Secret 和失败回退，在数据源条目中标注推荐并补充接入说明。
+
+- [修复] 基本面估值复用本轮已获取的实时行情（包括失败结果），避免重复请求挤占基本面和资金流预算；独立调用保留原有取数行为。
+- [文档] 三语 README 产品预览改用 640×320、4 帧/秒的宽屏裁剪动图，减少展示高度和文件体积，点击可查看完整原版演示。
+
+- [文档] 将中、英、繁体 README 的 Trendshift 日榜徽章替换为仓库徽章，并添加仓库详情页链接。
+
+- [文档] 恢复 README、部署指南及模型/搜索配置表中的 Anspire 可点击链接并保留推广码，继续作为 SerpAPI 后的可选搜索服务。
+
+- [改进] 下线 Anspire 合作宣传及专属额度说明，移除 README 推荐入口，调整配置示例和渠道展示顺序；新闻搜索顺序调整至 SerpAPI 之后，保留原推广码链接、已有 Key 和模型渠道兼容。
+
+- [修复] Agent 工具消息内容与工具调用参数序列化不再透传 NaN/±Infinity：`LLMToolAdapter._convert_messages` 序列化前将非有限浮点递归归一化为 `null`，并以 `allow_nan=False` 输出严格 RFC 8259 JSON，避免 LiteLLM 以 `"NaN" is not valid JSON` 拒绝请求（#2471）。
+
 - [修复] 启动日志不再对 `--stocks` / `--portfolio` / `--no-notify` 已覆盖的配置项告警；单一日线数据源失败（含 Eastmoney 股票与 ETF 请求）降为 WARNING，普通股票及 A 股指数全部日线数据源失败仍为 ERROR；LLM 返回与调试日志显示实际响应模型（含流式响应），依据实际调用路由标注回退，避免将别名、供应商前缀和日期版本差异误报为回退
 - [文档] 修正 DeepSeek 默认模型说明，明确 Gemini API 与 Vertex AI 的模型生命周期及验证边界。
 - [修复] 深度研究合成阶段预算增至受剩余整体预算限制的 120 秒；阶段/provider 超时保留阶段、实际耗时与原始原因，研究 API 不再误报整体预算耗尽或清零已知 token 用量（#2475）。
